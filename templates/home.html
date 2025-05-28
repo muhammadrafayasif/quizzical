@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block title %} Home {% endblock %}
+
+{% block main %}
+
+{% if submitted %}
+    <div id="submitted">
+        <h1>Submitted Quiz with ID {{submitted}}!</h1>
+    </div>
+{% endif %}
+
+{% if error %}
+    <div id="error">
+        <h1>{{error}}</h1>
+    </div>
+{% endif %}
+
+<h1>A free quiz taking website!</h1>
+<p>Make a quiz and share it with the world through your unique ID!</p>
+
+<ul>
+    <li>A beautiful user interface, with interactive elements!</li>
+    <li>A simple and lightweight client accessible on all devices.</li>
+    <li>No login or registration required!</li>
+    <li>Make and take quizzes completely anonymously!</li>
+</ul>
+{% if quizzes %}
+<h2>Below lies the latest quizzes that were made!</h2>
+<p>Simply click the quiz you are interested in and you will be redirected to the quiz page.</p>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Dated</th>
+    </tr>
+    {% for quiz in quizzes %}
+        <tr onclick="location.replace('/quiz?id={{loop.index}}')">
+            <td>{{quiz[0]}}</td>
+            <td>{{quiz[1]}}</td>
+            <td>{{date | date}}</td>
+        </tr>
+    {% endfor %}
+</table>
+{% endif %}
+{% endblock %}

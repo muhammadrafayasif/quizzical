@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block title %} Make a Quiz {% endblock %}
+
+{% block main %}
+
+{% if show_answers %}
+    <div id="submitted">
+        <h1>Submitted Successfully!</h1>
+    </div>
+{% endif %}
+
+<form id="questions" action="/submit" method="post">
+    <h1>{{quiz_id}}) Name of Quiz: {{name}}</h1>
+    <input name="id" value="{{quiz_id}}" style="display: none;">
+    <hr>
+    {% for i in questions %}
+    <div class="options">
+        <h1>{{loop.index}}) {{i["question"]}}</h1>
+        <p>{{i['optionA']}}</p>
+        <input required name="answer_{{loop.index}}" value="A" type="radio" {% if show_answers %} {% if i['answer'] == 'A' %} checked {% endif %} class="show_answer" onclick="return false;" {% endif %}>
+        <p>{{i['optionB']}}</p>
+        <input required name="answer_{{loop.index}}" value="B" type="radio" {% if show_answers %} {% if i['answer'] == 'B' %} checked {% endif %} class="show_answer" onclick="return false;" {% endif %}>
+        <p>{{i['optionC']}}</p>
+        <input required name="answer_{{loop.index}}" value="C" type="radio" {% if show_answers %} {% if i['answer'] == 'C' %} checked {% endif %} class="show_answer" onclick="return false;" {% endif %}>
+        <p>{{i['optionD']}}</p>
+        <input required name="answer_{{loop.index}}" value="D" type="radio" {% if show_answers %} {% if i['answer'] == 'D' %} checked {% endif %} class="show_answer" onclick="return false;" {% endif %}>
+        {% if show_answers %} <p style="width: 100%; text-align: center;">
+            {{percentages[loop.index-1] - 1}} other user(s) got {{user_answers[loop.index-1]}}!</p> {% endif %}
+    </div>
+    <br>
+    <hr>
+    {% endfor %}
+    <button type="submit" id="submit">Submit</button>
+</form>
+
+{% if show_answers %} <h1 style="text-align: center;">Your score: {{score}}</h1> {% endif %}
+
+{% endblock %}

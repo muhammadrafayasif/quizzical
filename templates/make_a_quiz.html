@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+
+{% block title %} Make a Quiz {% endblock %}
+
+{% block main %}
+
+<h1>Make a Quiz</h1>
+
+<form id="questions" action="/save" method="post">
+    <input required name="name" style="width: calc(100% - 72px); margin-bottom: 20px;" placeholder="Enter name of quiz"> 
+    <hr>
+    {% for i in questions %}
+    <div class="options">
+        <input id="question" name="question_{{loop.index}}" required placeholder="Enter question {{loop.index}}" value="{{i['question']}}">
+        <input name="A_{{loop.index}}" required placeholder="Enter option A" value="{{i['optionA']}}">
+        <input name="answer_{{loop.index}}" value="A" type="radio" checked>
+        <input name="B_{{loop.index}}" required placeholder="Enter option B" value="{{i['optionB']}}">
+        <input name="answer_{{loop.index}}" value="B" type="radio">
+        <input name="C_{{loop.index}}" required placeholder="Enter option C" value="{{i['optionC']}}">
+        <input name="answer_{{loop.index}}" value="C" type="radio">
+        <input name="D_{{loop.index}}" required placeholder="Enter option D" value="{{i['optionD']}}">
+        <input name="answer_{{loop.index}}" value="D" type="radio">
+    </div>
+    <br>
+    <hr>
+    {% endfor %}
+    <button type="button" onclick="add()" id="add_new">Add New</button>
+    <button type="submit" id="save">Save</button>
+</form>
+
+<script>
+    function add(){
+        const q = document.getElementsByClassName("options")
+        let arr = []
+        let questions = {}
+        for (let i=0; i<q.length; i++){
+            questions.question = document.getElementsByName(`question_${i+1}`)[0].value
+            questions.optionA = document.getElementsByName(`A_${i+1}`)[0].value
+            questions.optionB = document.getElementsByName(`B_${i+1}`)[0].value
+            questions.optionC = document.getElementsByName(`C_${i+1}`)[0].value
+            questions.optionD = document.getElementsByName(`D_${i+1}`)[0].value
+            let answers = document.getElementsByName(`answer_${i+1}`)
+            for (let j=0; j<answers.length; j++){
+                if (answers[j].checked){
+                    questions.answer = answers[j].value
+                    break
+                }
+            }
+            arr.push(questions)
+            questions = {}
+        }
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/add_new", true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function(){
+            if (xhr.status==200) location.reload()
+        }
+        xhr.send(JSON.stringify(arr));
+    }
+</script>
+
+{% endblock %}

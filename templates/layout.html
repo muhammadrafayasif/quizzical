@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Quizzical | {% block title %}{% endblock %}</title>
+        <link href="{{ url_for('static', filename='app.css')}}" rel="stylesheet">
+    </head>
+    <body>
+        <script>0</script>
+        <div class="navbar">
+            <a href="/" id="logo_el"><span id="logo">?</span> Quizzical</a>
+            <a href="/">Home</a>
+            <a href="/random">Random</a>
+            <a href="/make_a_quiz">Make a Quiz</a>
+            <a> <form action="/quiz" method="get"> <input min="1" value="1" name="id" type="number" placeholder="Select ID"> <button>Select</button> </form></a>
+        </div>
+
+        {% block main %}{% endblock %}
+    </body>
+</html>
